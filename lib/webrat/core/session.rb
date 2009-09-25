@@ -105,8 +105,12 @@ For example:
     end
 
     def basic_auth(user, pass)
-      encoded_login = ["#{user}:#{pass}"].pack("m*")
-      header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
+      if adapter.is_a?(Webrat::MechanizeAdapter)
+        adapter.basic_auth(user, pass)
+      else
+        encoded_login = ["#{user}:#{pass}"].pack("m*")
+        header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
+      end
     end
 
     def headers #:nodoc:
